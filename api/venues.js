@@ -42,18 +42,21 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     const venues = data.records.map(record => ({
-      id: record.id,
-      venueLogo: record.fields['venueLogo']?.[0]?.url || '',
-      venueName: record.fields['venueName'] || '',
-      numberEvents: record.fields['NumberEvents'] || 0,
-      address: record.fields['NOTO Address'] || '',
-      website: record.fields['website'] || '',
-      facebook: record.fields['facebook'] || '',
-      phone: record.fields['Phone Number'] || '',
-      friendsOfNOTO: record.fields['Friends of NOTO'] || false,
-      venueType: record.fields['venueType'] || '',
-      slug: record.fields['slug'] || ''
-    }));
+  id: record.id,
+  venueLogo: record.fields['venueLogo']?.[0]?.url || '',
+  venueName: record.fields['venueName'] || '',
+  numberEvents: record.fields['NumberEvents'] || 0,
+  address: record.fields['NOTO Address'] || '',
+  website: record.fields['website'] || '',
+  facebook: record.fields['facebook'] || '',
+  phone: record.fields['Phone Number'] || '',
+  friendsOfNOTO: record.fields['Friends of NOTO'] || false,
+  // Handle multi-select venue types from Airtable
+  venueType: Array.isArray(record.fields['venueType']) 
+    ? record.fields['venueType'].join(', ') 
+    : record.fields['venueType'] || '',
+  slug: record.fields['slug'] || ''
+}));
 
     res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate');
 
