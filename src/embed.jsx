@@ -33,12 +33,22 @@ const NOTOVenuesEmbed = () => {
         if (!response.ok) throw new Error('Failed to fetch venues');
 
         const data = await response.json();
-        setVenues(data.venues);
+setVenues(data.venues);
 
-        const types = [...new Set(data.venues.map(v => v.venueType).filter(Boolean))];
-        setVenueTypes(types);
+// Extract and split venue types (handles multiple types per venue)
+const allTypes = data.venues
+  .flatMap(v => {
+    if (!v.venueType) return [];
+    // Split by comma (from multi-select join)
+    return v.venueType
+      .split(',')
+      .map(type => type.trim())
+      .filter(type => type.length > 0);
+  });
 
-        setLoading(false);
+// Get unique types and sort alphabetically
+const uniqueTypes = [...new Set(allTypes)].sort();
+setVenueTypes(uniqueTypes);
 
         trackEvent('embed_view', null, null);
       } catch (err) {
