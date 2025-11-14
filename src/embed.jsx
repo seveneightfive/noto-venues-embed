@@ -61,8 +61,13 @@ setVenueTypes(uniqueTypes);
   }, []);
 
   const filteredVenues = selectedFilter === 'all' 
-    ? venues 
-    : venues.filter(v => v.venueType === selectedFilter);
+  ? venues 
+  : venues.filter(v => {
+      if (!v.venueType) return false;
+      // Check if venue type contains the selected filter
+      const types = v.venueType.split(',').map(t => t.trim());
+      return types.includes(selectedFilter);
+    });
 
   const handleClick = (venueId, venueName, action) => {
     trackEvent('click', venueId, venueName, action);
