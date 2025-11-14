@@ -8,17 +8,12 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    lib: {
-      entry: 'src/embed.jsx',
-      name: 'NOTOVenues',
-      fileName: 'noto-venues-embed',
-      formats: ['iife']
-    },
     rollupOptions: {
-      external: [],
+      input: 'src/main.jsx',
       output: {
-        inlineDynamicImports: true,
-        globals: {}
+        entryFileNames: 'noto-venues-embed.js',
+        format: 'iife',
+        name: 'NOTOVenues'
       }
     }
   }
