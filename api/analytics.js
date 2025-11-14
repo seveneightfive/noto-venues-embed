@@ -2,6 +2,7 @@ export default async function handler(req, res) {
   const allowedOrigins = [
     'https://785mag.com',
     'https://www.785mag.com',
+    'https://785design.com',
     'https://notoartsdistrict.com',
     'http://localhost:3000',
   ];
