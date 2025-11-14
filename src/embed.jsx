@@ -76,6 +76,21 @@ useEffect(() => {
   fetchVenues();
 }, []);
 
+  useEffect(() => {
+    if (window.self !== window.top) {
+      const sendHeight = () => {
+        const height = document.body.scrollHeight;
+        window.parent.postMessage({ height }, '*');
+      };
+      
+      setTimeout(sendHeight, 100);
+      
+      window.addEventListener('resize', sendHeight);
+      
+      return () => window.removeEventListener('resize', sendHeight);
+    }
+  }, [venues]);
+
   const filteredVenues = selectedFilter === 'all' 
   ? venues 
   : venues.filter(v => {
