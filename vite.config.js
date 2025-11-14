@@ -3,12 +3,20 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
+  define: {
+    'process.env': {}
+  },
   build: {
     outDir: 'dist',
-    emptyOutDir: true,
+    lib: {
+      entry: 'src/embed-standalone.jsx',
+      name: 'NOTOVenuesEmbed',
+      fileName: 'noto-venues-embed',
+      formats: ['iife']
+    },
     rollupOptions: {
-      input: {
-        main: 'index.html'
+      output: {
+        inlineDynamicImports: true
       }
     }
   }
