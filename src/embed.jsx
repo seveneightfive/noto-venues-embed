@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ExternalLink, Facebook } from 'lucide-react';
 
 const NOTOVenuesEmbed = () => {
@@ -8,7 +8,7 @@ const NOTOVenuesEmbed = () => {
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [venueTypes, setVenueTypes] = useState([]);
 
-  const trackEvent = (eventType, venueId, venueName, action = '') => {
+  const trackEvent = useCallback((eventType, venueId, venueName, action = '') => {
     const event = {
       type: eventType,
       venueId,
@@ -23,7 +23,7 @@ const NOTOVenuesEmbed = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(event)
     }).catch(err => console.error('Analytics error:', err));
-  };
+  }, []);
 
   useEffect(() => {
     const fetchVenues = async () => {
@@ -74,7 +74,7 @@ const NOTOVenuesEmbed = () => {
     };
 
     fetchVenues();
-  }, []);
+  }, [trackEvent]);
 
   // Send height updates to parent window (for iframe auto-sizing)
   useEffect(() => {
@@ -101,7 +101,7 @@ const NOTOVenuesEmbed = () => {
       });
 
   const handleClick = (venueId, venueName, action) => {
-    trackEvent('click', venueId, venueName, action);
+    trackEvent(venueId, venueName, action);
   };
 
   if (loading) {
