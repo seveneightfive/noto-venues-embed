@@ -28,49 +28,53 @@ const NOTOVenuesEmbed = () => {
 useEffect(() => {
   const fetchVenues = async () => {
     try {
-      const apiBase = window.location.hostname === 'localhost' 
-        ? '' 
-        : 'https://noto-venues-embed.vercel.app';
+      console.log('Starting fetch...');
+      const response = await fetch('https://noto-venues-embed.vercel.app/api/venues');
       
-      console.log('Fetching from:', `${apiBase}/api/venues`);
-      const response = await fetch(`${apiBase}/api/venues`);
-
       console.log('Response status:', response.status);
       
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error('API Error:', errorText);
-        throw new Error(`Failed to fetch venues: ${response.status}`);
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log('Venues data:', data);
-setVenues(data.venues);
+      console.log('Data received:', data);
+      console.log('Number of venues:', data.venues?.length);
 
-// Extract and split venue types (handles multiple types per venue)
-const allTypes = data.venues
-  .flatMap(v => {
-    if (!v.venueType) return [];
-    // Split by comma (from multi-select join)
-    return v.venueType
-      .split(',')
-      .map(type => type.trim())
-      .filter(type => type.length > 0);
-  });
-
-// Get unique types and sort alphabetically
-const uniqueTypes = [...new Set(allTypes)].sort();
-setVenueTypes(uniqueTypes);
-
-        trackEvent('embed_view', null, null);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
+      if (!data.venues || data.venues.length === 0) {
+        throw new Error('No venues found in response');
       }
-    };
 
-    fetchVenues();
-  }, []);
+      setVenues(data.venues);
+
+      // Extract unique venue types
+      const allTypes = [];
+      data.venues.forEach(venue => {
+        if (venue.venueType) {
+          const types = venue.venueType.split(',').map(t => t.trim());
+          types.forEach(type => {
+            if (type && !allTypes.includes(type)) {
+              allTypes.push(type);
+            }
+          });
+        }
+      });
+
+      allTypes.sort();
+      console.log('Venue types:', allTypes);
+      setVenueTypes(allTypes);
+      setLoading(false);
+
+      trackEvent('embed_view', null, null);
+    } catch (err) {
+      console.error('Fetch error:', err);
+      setError(err.message);
+      setLoading(false);
+    }
+  };
+
+  fetchVenues();
+}, []);
 
   const filteredVenues = selectedFilter === 'all' 
   ? venues 
