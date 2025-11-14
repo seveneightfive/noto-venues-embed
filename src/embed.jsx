@@ -25,14 +25,26 @@ const NOTOVenuesEmbed = () => {
     }).catch(err => console.error('Analytics error:', err));
   };
 
-  useEffect(() => {
-    const fetchVenues = async () => {
-      try {
-        const response = await fetch('/api/venues');
+useEffect(() => {
+  const fetchVenues = async () => {
+    try {
+      const apiBase = window.location.hostname === 'localhost' 
+        ? '' 
+        : 'https://noto-venues-embed.vercel.app';
+      
+      console.log('Fetching from:', `${apiBase}/api/venues`);
+      const response = await fetch(`${apiBase}/api/venues`);
 
-        if (!response.ok) throw new Error('Failed to fetch venues');
+      console.log('Response status:', response.status);
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('API Error:', errorText);
+        throw new Error(`Failed to fetch venues: ${response.status}`);
+      }
 
-        const data = await response.json();
+      const data = await response.json();
+      console.log('Venues data:', data);
 setVenues(data.venues);
 
 // Extract and split venue types (handles multiple types per venue)
