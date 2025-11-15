@@ -28,18 +28,13 @@ const NOTOVenuesEmbed = () => {
   useEffect(() => {
     const fetchVenues = async () => {
       try {
-        console.log('Starting fetch...');
         const response = await fetch('https://noto-venues-embed.vercel.app/api/venues');
-        
-        console.log('Response status:', response.status);
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
-        console.log('Data received:', data);
-        console.log('Number of venues:', data.venues?.length);
 
         if (!data.venues || data.venues.length === 0) {
           throw new Error('No venues found in response');
@@ -47,7 +42,6 @@ const NOTOVenuesEmbed = () => {
 
         setVenues(data.venues);
 
-        // Extract unique venue types
         const allTypes = [];
         data.venues.forEach(venue => {
           if (venue.venueType) {
@@ -61,7 +55,6 @@ const NOTOVenuesEmbed = () => {
         });
 
         allTypes.sort();
-        console.log('Venue types:', allTypes);
         setVenueTypes(allTypes);
         setLoading(false);
 
@@ -76,7 +69,6 @@ const NOTOVenuesEmbed = () => {
     fetchVenues();
   }, [trackEvent]);
 
-  // Send height updates to parent window (for iframe auto-sizing)
   useEffect(() => {
     if (window.self !== window.top) {
       const sendHeight = () => {
@@ -101,7 +93,7 @@ const NOTOVenuesEmbed = () => {
       });
 
   const handleClick = (venueId, venueName, action) => {
-    trackEvent(venueId, venueName, action);
+    trackEvent('click', venueId, venueName, action);
   };
 
   if (loading) {
@@ -136,7 +128,6 @@ const NOTOVenuesEmbed = () => {
         }
       `}</style>
 
-      {/* Filter Bar */}
       <div className="mb-6 flex flex-wrap gap-2">
         <button
           onClick={() => setSelectedFilter('all')}
@@ -165,7 +156,6 @@ const NOTOVenuesEmbed = () => {
         ))}
       </div>
 
-      {/* Venue Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         {filteredVenues.map(venue => {
           const hasImageUrl = venue.imageUrl && venue.imageUrl.trim() !== '';
@@ -177,10 +167,8 @@ const NOTOVenuesEmbed = () => {
                 venue.friendsOfNOTO ? 'bg-[#a4185e]' : 'bg-white'
               }`}
             >
-              {/* Image Section */}
               <div className={`h-64 relative ${venue.friendsOfNOTO ? 'bg-[#8a1450]' : 'bg-gray-100'} flex items-center justify-center overflow-hidden`}>
                 {hasImageUrl ? (
-                  // Show background image with logo circle overlay
                   <>
                     <img
                       src={venue.imageUrl}
@@ -200,7 +188,6 @@ const NOTOVenuesEmbed = () => {
                     )}
                   </>
                 ) : venue.venueLogo ? (
-                  // Show just the logo if no image URL
                   <img
                     src={venue.venueLogo}
                     alt={venue.venueName}
@@ -209,7 +196,6 @@ const NOTOVenuesEmbed = () => {
                 ) : null}
               </div>
 
-              {/* Content Section */}
               <div className={`p-5 ${hasImageUrl && venue.venueLogo ? 'pt-8' : ''}`}>
                 <h3
                   className={`text-xl font-bold mb-1 text-center ${
@@ -259,10 +245,9 @@ const NOTOVenuesEmbed = () => {
                   </p>
                 )}
 
-                {/* Buttons */}
                 <div className="flex gap-2">
                   {venue.website && (
-                    
+                    <a
                       href={venue.website}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -279,12 +264,12 @@ const NOTOVenuesEmbed = () => {
                     </a>
                   )}
                   {venue.facebook && (
-                    
+                    <a
                       href={venue.facebook}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => handleClick(venue.id, venue.venueName, 'facebook')}
-                      className={`${venue.website ? 'flex-1' : 'flex-1'} flex items-center justify-center gap-2 px-4 py-2.5 rounded text-sm font-medium transition-colors ${
+                      className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded text-sm font-medium transition-colors ${
                         venue.friendsOfNOTO
                           ? 'bg-[#5dafa7] text-white hover:bg-[#4d9f97]'
                           : 'bg-[#5dafa7] text-white hover:bg-[#4d9f97]'
@@ -302,11 +287,10 @@ const NOTOVenuesEmbed = () => {
         })}
       </div>
 
-      {/* Footer */}
       <div className="text-center py-6 border-t border-gray-200">
         <p className="text-sm text-gray-600" style={{ fontFamily: 'Droid Sans, sans-serif' }}>
           Events and Directory presented by <span className="font-bold">seveneightfive magazine</span> in partnership with <span className="font-bold">ArtsConnect</span>.{' '}
-          
+          <a
             href="https://785mag.com"
             target="_blank"
             rel="noopener noreferrer"
