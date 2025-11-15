@@ -211,7 +211,7 @@ const NOTOVenuesEmbed = () => {
                       className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded text-sm font-medium transition-colors bg-black text-white hover:bg-gray-900"
                       style={{ fontFamily: 'Droid Sans, sans-serif' }}
                     >
-                      <ExternalLink size={16} />
+                      <Website size={16} />
                       Website
                     </a>
                   )}
