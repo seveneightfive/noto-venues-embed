@@ -31,13 +31,13 @@ const NOTOVenuesEmbed = () => {
         const response = await fetch('https://noto-venues-embed.vercel.app/api/venues');
         
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error('Failed to fetch venues');
         }
 
         const data = await response.json();
 
         if (!data.venues || data.venues.length === 0) {
-          throw new Error('No venues found in response');
+          throw new Error('No venues found');
         }
 
         setVenues(data.venues);
@@ -57,10 +57,8 @@ const NOTOVenuesEmbed = () => {
         allTypes.sort();
         setVenueTypes(allTypes);
         setLoading(false);
-
         trackEvent('embed_view', null, null);
       } catch (err) {
-        console.error('Fetch error:', err);
         setError(err.message);
         setLoading(false);
       }
@@ -77,7 +75,6 @@ const NOTOVenuesEmbed = () => {
       };
       
       setTimeout(sendHeight, 100);
-      
       window.addEventListener('resize', sendHeight);
       
       return () => window.removeEventListener('resize', sendHeight);
@@ -131,11 +128,7 @@ const NOTOVenuesEmbed = () => {
       <div className="mb-6 flex flex-wrap gap-2">
         <button
           onClick={() => setSelectedFilter('all')}
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-            selectedFilter === 'all'
-              ? 'bg-[#a4185e] text-white'
-              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }`}
+          className={'px-4 py-2 rounded-full text-sm font-medium transition-colors ' + (selectedFilter === 'all' ? 'bg-[#a4185e] text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300')}
           style={{ fontFamily: 'Droid Sans, sans-serif' }}
         >
           All Venues
@@ -144,11 +137,7 @@ const NOTOVenuesEmbed = () => {
           <button
             key={type}
             onClick={() => setSelectedFilter(type)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-              selectedFilter === type
-                ? 'bg-[#a4185e] text-white'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-            }`}
+            className={'px-4 py-2 rounded-full text-sm font-medium transition-colors ' + (selectedFilter === type ? 'bg-[#a4185e] text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300')}
             style={{ fontFamily: 'Droid Sans, sans-serif' }}
           >
             {type}
@@ -163,11 +152,9 @@ const NOTOVenuesEmbed = () => {
           return (
             <div
               key={venue.id}
-              className={`venue-card-hover rounded-lg shadow-md overflow-hidden ${
-                venue.friendsOfNOTO ? 'bg-[#a4185e]' : 'bg-white'
-              }`}
+              className={'venue-card-hover rounded-lg shadow-md overflow-hidden ' + (venue.friendsOfNOTO ? 'bg-[#a4185e]' : 'bg-white')}
             >
-              <div className={`h-64 relative ${venue.friendsOfNOTO ? 'bg-[#8a1450]' : 'bg-gray-100'} flex items-center justify-center overflow-hidden`}>
+              <div className={'h-64 relative flex items-center justify-center overflow-hidden ' + (venue.friendsOfNOTO ? 'bg-[#8a1450]' : 'bg-gray-100')}>
                 {hasImageUrl ? (
                   <>
                     <img
@@ -180,7 +167,7 @@ const NOTOVenuesEmbed = () => {
                         <div className="w-24 h-24 rounded-full bg-white border-4 border-white shadow-lg overflow-hidden flex items-center justify-center">
                           <img
                             src={venue.venueLogo}
-                            alt={`${venue.venueName} logo`}
+                            alt={venue.venueName + ' logo'}
                             className="w-full h-full object-contain p-2"
                           />
                         </div>
@@ -196,11 +183,9 @@ const NOTOVenuesEmbed = () => {
                 ) : null}
               </div>
 
-              <div className={`p-5 ${hasImageUrl && venue.venueLogo ? 'pt-8' : ''}`}>
+              <div className={'p-5 ' + (hasImageUrl && venue.venueLogo ? 'pt-8' : '')}>
                 <h3
-                  className={`text-xl font-bold mb-1 text-center ${
-                    venue.friendsOfNOTO ? 'text-white' : 'text-gray-900'
-                  }`}
+                  className={'text-xl font-bold mb-1 text-center ' + (venue.friendsOfNOTO ? 'text-white' : 'text-gray-900')}
                   style={{ fontFamily: 'Poppins, sans-serif' }}
                 >
                   {venue.venueName}
@@ -208,9 +193,7 @@ const NOTOVenuesEmbed = () => {
 
                 {venue.venueType && (
                   <p
-                    className={`text-sm mb-3 text-center ${
-                      venue.friendsOfNOTO ? 'text-white opacity-90' : 'text-gray-600'
-                    }`}
+                    className={'text-sm mb-3 text-center ' + (venue.friendsOfNOTO ? 'text-white opacity-90' : 'text-gray-600')}
                     style={{ fontFamily: 'Droid Sans, sans-serif' }}
                   >
                     {venue.venueType.split(',')[0].trim()}
@@ -219,9 +202,7 @@ const NOTOVenuesEmbed = () => {
 
                 {venue.address && (
                   <p
-                    className={`text-sm mb-2 flex items-start gap-1 ${
-                      venue.friendsOfNOTO ? 'text-white' : 'text-gray-600'
-                    }`}
+                    className={'text-sm mb-2 flex items-start gap-1 ' + (venue.friendsOfNOTO ? 'text-white' : 'text-gray-600')}
                     style={{ fontFamily: 'Droid Sans, sans-serif' }}
                   >
                     <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -233,9 +214,7 @@ const NOTOVenuesEmbed = () => {
 
                 {venue.phone && (
                   <p
-                    className={`text-sm mb-4 flex items-center gap-1 ${
-                      venue.friendsOfNOTO ? 'text-white' : 'text-gray-600'
-                    }`}
+                    className={'text-sm mb-4 flex items-center gap-1 ' + (venue.friendsOfNOTO ? 'text-white' : 'text-gray-600')}
                     style={{ fontFamily: 'Droid Sans, sans-serif' }}
                   >
                     <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -247,16 +226,12 @@ const NOTOVenuesEmbed = () => {
 
                 <div className="flex gap-2">
                   {venue.website && (
-                    <a
+                    
                       href={venue.website}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => handleClick(venue.id, venue.venueName, 'website')}
-                      className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded text-sm font-medium transition-colors ${
-                        venue.friendsOfNOTO
-                          ? 'bg-black text-white hover:bg-gray-900'
-                          : 'bg-black text-white hover:bg-gray-900'
-                      }`}
+                      className={'flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded text-sm font-medium transition-colors ' + (venue.friendsOfNOTO ? 'bg-black text-white hover:bg-gray-900' : 'bg-black text-white hover:bg-gray-900')}
                       style={{ fontFamily: 'Droid Sans, sans-serif' }}
                     >
                       <ExternalLink size={16} />
@@ -264,16 +239,12 @@ const NOTOVenuesEmbed = () => {
                     </a>
                   )}
                   {venue.facebook && (
-                    <a
+                    
                       href={venue.facebook}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => handleClick(venue.id, venue.venueName, 'facebook')}
-                      className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded text-sm font-medium transition-colors ${
-                        venue.friendsOfNOTO
-                          ? 'bg-[#5dafa7] text-white hover:bg-[#4d9f97]'
-                          : 'bg-[#5dafa7] text-white hover:bg-[#4d9f97]'
-                      }`}
+                      className={'flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded text-sm font-medium transition-colors ' + (venue.friendsOfNOTO ? 'bg-[#5dafa7] text-white hover:bg-[#4d9f97]' : 'bg-[#5dafa7] text-white hover:bg-[#4d9f97]')}
                       style={{ fontFamily: 'Droid Sans, sans-serif' }}
                     >
                       <Facebook size={16} />
@@ -290,7 +261,7 @@ const NOTOVenuesEmbed = () => {
       <div className="text-center py-6 border-t border-gray-200">
         <p className="text-sm text-gray-600" style={{ fontFamily: 'Droid Sans, sans-serif' }}>
           Events and Directory presented by <span className="font-bold">seveneightfive magazine</span> in partnership with <span className="font-bold">ArtsConnect</span>.{' '}
-          <a
+          
             href="https://785mag.com"
             target="_blank"
             rel="noopener noreferrer"
