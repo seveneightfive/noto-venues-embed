@@ -5,11 +5,6 @@ export default defineConfig({
   plugins: [react()],
   publicDir: 'public',
   build: {
-    outDir: 'dist',
-    rollupOptions: {
-      input: {
-        main: './index.html'
-      }
-    }
+    outDir: 'dist'
   }
 });
