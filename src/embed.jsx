@@ -262,7 +262,7 @@ const NOTOVenuesEmbed = () => {
                     <Calendar size={16} />
                     {venue.NumberEvents} Upcoming Event{venue.NumberEvents > 1 ? 's' : ''}
                   </a>
-                )}
+              ) : null}
 
                 <div className="flex gap-2">
                   {venue.website && (
