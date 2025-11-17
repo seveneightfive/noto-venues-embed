@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ExternalLink, Facebook } from 'lucide-react';
+import { ExternalLink, Facebook, Calendar } from 'lucide-react';
 
 const NOTOVenuesEmbed = () => {
   const [venues, setVenues] = useState([]);
@@ -159,6 +159,7 @@ const NOTOVenuesEmbed = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {filteredVenues.map(venue => {
           const hasImageUrl = venue.imageUrl && venue.imageUrl.trim() !== '';
+          const hasUpcomingEvents = venue.NumberEvents && venue.NumberEvents >= 1;
           
           return (
             <div
@@ -167,7 +168,7 @@ const NOTOVenuesEmbed = () => {
                 venue.friendsOfNOTO ? 'bg-[#a4185e]' : 'bg-white'
               }`}
             >
-              <div className={`h-64 relative ${venue.friendsOfNOTO ? 'bg-[#8a1450]' : 'bg-gray-100'} flex items-center justify-center overflow-hidden`}>
+              <div className={`h-64 relative ${venue.friendsOfNOTO ? 'bg-gray-800' : 'bg-gray-100'} flex items-center justify-center overflow-hidden`}>
                 {hasImageUrl ? (
                   <>
                     <img
@@ -243,6 +244,24 @@ const NOTOVenuesEmbed = () => {
                     </svg>
                     {venue.phone}
                   </p>
+                )}
+
+                {hasUpcomingEvents && venue.slug && (
+                  <a
+                    href={`https://785mag.com/venues/${venue.slug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => handleClick(venue.id, venue.venueName, 'events')}
+                    className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded text-sm font-medium transition-colors mb-2 ${
+                      venue.friendsOfNOTO
+                        ? 'bg-white text-[#a4185e] hover:bg-gray-100'
+                        : 'bg-[#a4185e] text-white hover:bg-[#8a1450]'
+                    }`}
+                    style={{ fontFamily: 'Droid Sans, sans-serif' }}
+                  >
+                    <Calendar size={16} />
+                    {venue.NumberEvents} Upcoming Event{venue.NumberEvents > 1 ? 's' : ''}
+                  </a>
                 )}
 
                 <div className="flex gap-2">
