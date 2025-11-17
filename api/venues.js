@@ -49,7 +49,7 @@ export default async function handler(req, res) {
       venueLogo: record.fields['venueLogo']?.[0]?.url || '',
       imageUrl: record.fields['heroImage']?.[0]?.url || '', // Hero image field from Airtable
       venueName: record.fields['venueName'] || '',
-      numberEvents: record.fields['NumberEvents'] || 0,
+      NumberEvents: record.fields['NumberEvents'] || 0,
       address: record.fields['NOTO Address'] || '',
       website: record.fields['website'] || '',
       facebook: record.fields['facebook'] || '',
