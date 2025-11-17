@@ -168,7 +168,7 @@ const NOTOVenuesEmbed = () => {
                 venue.friendsOfNOTO ? 'bg-[#a4185e]' : 'bg-white'
               }`}
             >
-              <div className={`h-64 relative ${venue.friendsOfNOTO ? 'bg-gray-800' : 'bg-gray-100'} flex items-center justify-center overflow-hidden`}>
+              <div className={`h-64 relative ${venue.friendsOfNOTO ? 'bg-gray-200' : 'bg-gray-100'} flex items-center justify-center overflow-hidden`}>
                 {hasImageUrl ? (
                   <>
                     <img
