@@ -168,7 +168,7 @@ const NOTOVenuesEmbed = () => {
                 venue.friendsOfNOTO ? 'bg-[#a4185e]' : 'bg-white'
               }`}
             >
-              <div className={`h-64 relative ${venue.friendsOfNOTO ? 'bg-gray-200' : 'bg-gray-100'} flex items-center justify-center overflow-hidden`}>
+              <div className={`h-64 relative ${venue.friendsOfNOTO ? 'bg-gray-800' : 'bg-gray-100'} flex items-center justify-center overflow-hidden`}>
                 {hasImageUrl ? (
                   <>
                     <img
@@ -246,7 +246,7 @@ const NOTOVenuesEmbed = () => {
                   </p>
                 )}
 
-                {hasUpcomingEvents && venue.slug && (
+                {hasUpcomingEvents && venue.slug ? (
                   <a
                     href={`https://785mag.com/venues/${venue.slug}`}
                     target="_blank"
@@ -262,7 +262,7 @@ const NOTOVenuesEmbed = () => {
                     <Calendar size={16} />
                     {venue.NumberEvents} Upcoming Event{venue.NumberEvents > 1 ? 's' : ''}
                   </a>
-              ) : null}
+                ) : null}
 
                 <div className="flex gap-2">
                   {venue.website && (
